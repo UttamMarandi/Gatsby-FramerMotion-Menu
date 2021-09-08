@@ -140,4 +140,7 @@ ul {
   background-color: #e7dede;
   border-radius: 100%;
   pointer-events: none;
+  @media screen and (max-width: 992px) {
+    display: none;
+  }
 }

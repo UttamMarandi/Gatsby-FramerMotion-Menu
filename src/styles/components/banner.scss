@@ -32,6 +32,9 @@
       &.small {
         font-size: 3rem;
       }
+      @media screen and (max-width: 540px) {
+        font-size: 2rem;
+      }
     }
     .image {
       width: 1000px;
