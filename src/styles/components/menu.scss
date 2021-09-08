@@ -68,6 +68,7 @@
                 left: 30rem;
                 width: 7.6rem;
                 height: 5rem;
+                // this is a pretty neat idea to animate. make mask absolute, set width and height to 100% so that it covers the entire parent element and the animate any revealing effect
                 .mask {
                   height: 100%;
                   width: 100%;
@@ -154,4 +155,18 @@
       }
     }
   }
+}
+
+.left-panel-background {
+  height: 100vh;
+  width: 50vw;
+  position: absolute;
+  z-index: 11;
+}
+.right-panel-background {
+  height: 100vh;
+  width: 50vw;
+  position: absolute;
+  right: 0;
+  z-index: 11;
 }

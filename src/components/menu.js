@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Close } from "../icons/icons"
 //Gatby Image
 import { Image } from "../components/gatsby-images/image"
@@ -41,49 +41,59 @@ function Menu({ menuState, setMenuState }) {
       {/* AnimatePrsence allows to use exit animation when the path changes */}
       <AnimatePresence>
         {menuState && (
-          <motion.div exit={{ opacity: 0 }} className="products">
-            <div className="menu-title">Products</div>
-            <div onClick={() => setMenuState(false)} className="close">
-              <Close />
-            </div>
-            <div className="menu">
-              <div className="container">
-                <div className="menu-inner">
-                  <motion.ul
-                    variants={parent}
-                    initial="initial"
-                    animate="animate"
-                  >
-                    {data.map(
-                      (
-                        {
-                          title,
-                          id,
-                          leftLineFlex,
-                          rightLineFlex,
-                          thumbnailPosition,
-                          offset,
-                          src,
-                        },
-                        index
-                      ) => (
-                        <List
-                          key={index}
-                          title={title}
-                          id={id}
-                          leftLineFlex={leftLineFlex}
-                          rightLineFlex={rightLineFlex}
-                          thumbnailPosition={thumbnailPosition}
-                          offset={offset}
-                          src={src}
-                        />
-                      )
-                    )}
-                  </motion.ul>
+          <>
+            <motion.div
+              // making menu animation smmoth
+              //our bar panel takes 2s to animate , so we want a delay of 1,to our exit so that animation of menu has already started when we see the menu
+              initial={{ visibility: "hidden" }}
+              animate={{ visibility: "visible", transition: { delay: 1 } }}
+              exit={{ visibility: "hidden", transition: { delay: 1 } }}
+              className="products"
+            >
+              <div className="menu-title">Products</div>
+              <div onClick={() => setMenuState(false)} className="close">
+                <Close />
+              </div>
+              <div className="menu">
+                <div className="container">
+                  <div className="menu-inner">
+                    <motion.ul
+                      variants={parent}
+                      initial="initial"
+                      animate="animate"
+                    >
+                      {data.map(
+                        (
+                          {
+                            title,
+                            id,
+                            leftLineFlex,
+                            rightLineFlex,
+                            thumbnailPosition,
+                            offset,
+                            src,
+                          },
+                          index
+                        ) => (
+                          <List
+                            key={index}
+                            title={title}
+                            id={id}
+                            leftLineFlex={leftLineFlex}
+                            rightLineFlex={rightLineFlex}
+                            thumbnailPosition={thumbnailPosition}
+                            offset={offset}
+                            src={src}
+                          />
+                        )
+                      )}
+                    </motion.ul>
+                  </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+            <Panels />
+          </>
         )}
       </AnimatePresence>
     </>
@@ -143,6 +153,45 @@ const List = ({
         </div>
       </Link>
     </motion.li>
+  )
+}
+
+const Panels = () => {
+  const [panelComplete, setPanelComplete] = useState(false)
+  return (
+    <>
+      <motion.div
+        // change backgroundColor based on panelComplete
+        style={{ backgroundColor: panelComplete ? "#e7e7de" : "#e7dee7" }}
+        initial={{ height: 0 }}
+        animate={{ height: [0, window.innerHeight, 0], bottom: [null, 0, 0] }}
+        exit={{ height: [0, window.innerHeight, 0], top: [null, 0, 0] }}
+        transition={{ ...transition, duration: 2, times: [0, 0.5, 1] }}
+        // this is where all craziness happens
+        //initally height is set to 0
+        //now we want to animate the height. Instead of giving specific value we pass an array , which represnt that height will take keyframes
+        //first height will be 0 , at middle time span height will be innerHeight and then height will again be 0. so by now animation will start from top , cover the entire div and then close at top
+        //what we want is the div to close at bottom, so we define a bottom property which will also take keyframes. for first frame height is null , then for next two frames height is 0. this make sure while animation is closing , it closes at bottom
+        //times is like timestamp , where 0 is intial timestamp then goes to 0.5 where height will set to window.innerHeight i.e 100vh, and than to 1,where it closes
+        className="left-panel-background"
+      ></motion.div>
+      <motion.div
+        style={{ backgroundColor: panelComplete ? "#e7e7de" : "#e7dee7" }}
+        initial={{ height: 0 }}
+        animate={{
+          height: [0, window.innerHeight, 0],
+          bottom: [0, 0, window.innerHeight],
+        }}
+        exit={{ height: [0, window.innerHeight, 0], bottom: [null, 0, 0] }}
+        transition={{ ...transition, duration: 2, times: [0, 0.5, 1] }}
+        className="right-panel-background"
+        onAnimationComplete={() => {
+          // if animation is completes toggle panelCompleted
+          setPanelComplete(!panelComplete)
+        }}
+      ></motion.div>
+      {/* <div className="right-panel-background"></div> */}
+    </>
   )
 }
 
