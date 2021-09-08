@@ -2,7 +2,7 @@ import { Link } from "gatsby"
 import React, { useEffect } from "react"
 import { useLocation } from "@reach/router"
 
-const Header = ({ setMenuState, menuState }) => {
+const Header = ({ menuState, setMenuState }) => {
   const location = useLocation() //gets the path for the page
   useEffect(() => {
     setMenuState(false) //whenever the path changes set the menuState to false
