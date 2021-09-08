@@ -35,7 +35,7 @@ const maskAnimation = {
   animate: { width: 0 },
 }
 
-function Menu({ menuState, setMenuState, x, y }) {
+function Menu({ menuState, setMenuState, x, y, setCursorHover }) {
   return (
     <>
       {/* AnimatePrsence allows to use exit animation when the path changes */}
@@ -51,7 +51,12 @@ function Menu({ menuState, setMenuState, x, y }) {
               className="products"
             >
               <div className="menu-title">Products</div>
-              <div onClick={() => setMenuState(false)} className="close">
+              <div
+                onClick={() => setMenuState(false)}
+                onMouseEnter={() => setCursorHover(true)}
+                onMouseLeave={() => setCursorHover(false)}
+                className="close"
+              >
                 <Close />
               </div>
               <div className="menu">
@@ -86,6 +91,7 @@ function Menu({ menuState, setMenuState, x, y }) {
                             src={src}
                             x={x} //this value do not come from destructuring List
                             y={y}
+                            setCursorHover={setCursorHover}
                           />
                         )
                       )}
@@ -112,6 +118,7 @@ const List = ({
   src,
   x,
   y,
+  setCursorHover,
 }) => {
   const list = useRef(null)
   const [hoverState, setHoverState] = useState(false)
@@ -142,6 +149,8 @@ const List = ({
             className="title"
             onHoverStart={() => setHoverState(true)}
             onHoverEnd={() => setHoverState(false)}
+            onMouseEnter={() => setCursorHover(true)}
+            onMouseLeave={() => setCursorHover(false)}
           >
             <h2>
               <motion.div
@@ -165,8 +174,11 @@ const List = ({
             initial={{ opacity: 0 }}
             animate={{
               opacity: hoverState ? 1 : 0,
-              x: listPostion.top,
-              y: listPostion.left,
+              x: x - listPostion.top + offset,
+              y: y - listPostion.left,
+            }}
+            transition={{
+              ease: "linear",
             }}
             className="floating-image"
           >
