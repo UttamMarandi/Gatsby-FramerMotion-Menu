@@ -7,47 +7,51 @@ import { Link } from "gatsby"
 //data
 import data from "../data/products.json"
 
-function Menu() {
+function Menu({ menuState, setMenuState }) {
   return (
-    <div className="products">
-      <div className="menu-title">Products</div>
-      <div className="close">
-        <Close />
-      </div>
-      <div className="menu">
-        <div className="container">
-          <div className="menu-inner">
-            <ul>
-              {data.map(
-                (
-                  {
-                    title,
-                    id,
-                    leftLineFlex,
-                    rightLineFlex,
-                    thumbnailPosition,
-                    offset,
-                    src,
-                  },
-                  index
-                ) => (
-                  <List
-                    key={index}
-                    title={title}
-                    id={id}
-                    leftLineFlex={leftLineFlex}
-                    rightLineFlex={rightLineFlex}
-                    thumbnailPosition={thumbnailPosition}
-                    offset={offset}
-                    src={src}
-                  />
-                )
-              )}
-            </ul>
+    <>
+      {menuState && (
+        <div className="products">
+          <div className="menu-title">Products</div>
+          <div onClick={() => setMenuState(false)} className="close">
+            <Close />
+          </div>
+          <div className="menu">
+            <div className="container">
+              <div className="menu-inner">
+                <ul>
+                  {data.map(
+                    (
+                      {
+                        title,
+                        id,
+                        leftLineFlex,
+                        rightLineFlex,
+                        thumbnailPosition,
+                        offset,
+                        src,
+                      },
+                      index
+                    ) => (
+                      <List
+                        key={index}
+                        title={title}
+                        id={id}
+                        leftLineFlex={leftLineFlex}
+                        rightLineFlex={rightLineFlex}
+                        thumbnailPosition={thumbnailPosition}
+                        offset={offset}
+                        src={src}
+                      />
+                    )
+                  )}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   )
 }
 

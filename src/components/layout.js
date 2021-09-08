@@ -24,7 +24,11 @@ const Layout = ({ children }) => {
 
   return (
     <div className="app">
-      <Header siteTitle={siteData.site.siteMetadata.title} />
+      <Header
+        siteTitle={siteData.site.siteMetadata.title}
+        setMenuState={setMenuState}
+        menuState={menuState}
+      />
       <Menu menuState={menuState} setMenuState={setMenuState} />
       <div>
         <main>{children}</main>
